@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 #include "stack.h"
 
 int getPriority(int op) {
@@ -83,28 +84,28 @@ void convertToRPN(const std::string& str, Stack *stack) {
     stack_delete(raw);
 }
 
-void generateAssembler(Stack *rnpStack) {
+void generateAssembler(Stack *rnpStack, std::ofstream& out) {
     while (!stack_empty(rnpStack)) {
         int c = stack_get(rnpStack);
         stack_pop(rnpStack);
 
         if (c >= 0) {
-            std::cout << "PUSH " << c << '\n';
+            out << "PUSH " << c << '\n';
         }else {
-            std::cout << "POP A" << '\n';
-            std::cout << "POP B" << '\n';
+            out << "POP A" << '\n';
+            out << "POP B" << '\n';
 
             if (c == -1) {
-                std::cout << "ADD A, B" << '\n';
-                std::cout << "PUSH A" << '\n';
+                out << "ADD A, B" << '\n';
+                out << "PUSH A" << '\n';
             }
             if (c == -2) {
-                std::cout << "SUB B, A" << '\n';
-                std::cout << "PUSH B" << '\n';
+               out<< "SUB B, A" << '\n';
+               out << "PUSH B" << '\n';
             }
             if (c == -3) {
-                std::cout << "MUL A, B" << '\n';
-                std::cout << "PUSH A" << '\n';
+               out<< "MUL A, B" << '\n';
+               out<< "PUSH A" << '\n';
             }
 
         }

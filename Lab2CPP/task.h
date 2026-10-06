@@ -7,6 +7,6 @@ int getPriority(char op);
 
 void convertToRPN(const std::string& str, Stack *stack);
 
-void generateAssembler(Stack *rnpStack);
+void generateAssembler(Stack *rnpStack, std::ofstream& out);
 
 #endif
