@@ -51,10 +51,10 @@ void convertToRPN(const std::string& str, Stack *stack) {
             i--;
             stack_push(raw, std::stoi(num));
         }
-        else if (c == -4) {
+        else if (c == '(') {
             stack_push(operators, encodeOperator(c));
-        } else if (c == -5) {
-            while (!stack_empty(operators) && stack_get(operators) != -4) {
+        } else if (c == ')') {
+            while (!stack_empty(operators) && stack_get(operators) != -4){
                 stack_push(raw, stack_get(operators));
                 stack_pop(operators);
             }
@@ -68,7 +68,6 @@ void convertToRPN(const std::string& str, Stack *stack) {
             }
             stack_push(operators, encodeOperator(c));
         }
-
     }
 
     while (!stack_empty(operators)) {
@@ -82,4 +81,32 @@ void convertToRPN(const std::string& str, Stack *stack) {
         stack_pop(raw);
     }
     stack_delete(raw);
+}
+
+void generateAssembler(Stack *rnpStack) {
+    while (!stack_empty(rnpStack)) {
+        int c = stack_get(rnpStack);
+        stack_pop(rnpStack);
+
+        if (c >= 0) {
+            std::cout << "PUSH " << c << '\n';
+        }else {
+            std::cout << "POP A" << '\n';
+            std::cout << "POP B" << '\n';
+
+            if (c == -1) {
+                std::cout << "ADD A, B" << '\n';
+                std::cout << "PUSH A" << '\n';
+            }
+            if (c == -2) {
+                std::cout << "SUB B, A" << '\n';
+                std::cout << "PUSH B" << '\n';
+            }
+            if (c == -3) {
+                std::cout << "MUL A, B" << '\n';
+                std::cout << "PUSH A" << '\n';
+            }
+
+        }
+    }
 }

@@ -10,12 +10,7 @@ int main() {
     std::getline(std::cin, expr);
 
     Stack *stack = stack_create();
-
     convertToRPN(expr, stack);
-
-    while (!stack_empty(stack)) {
-        std::cout << stack_get(stack) << ' ';
-        stack_pop(stack);
-    }
+    generateAssembler(stack);
     return 0;
 }
