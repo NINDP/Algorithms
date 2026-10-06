@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 
 bool test_task(const std::string& program_path) {
     int passed = 0, failed = 0;
