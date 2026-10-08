@@ -1,36 +1,38 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <cctype>
 #include "stack.h"
+#include "task.h"
 
-int getPriority(int op) {
-    if (op == -1 || op == -2) {
+int getPriority(OperatorCode op) {
+    if (op == PLUS || op == MINUS) {
         return 1;
     }
-    if (op == -3) {
+    if (op == MUL) {
         return 2;
     }
     return 0;
 }
 
-int encodeOperator(char op) {
+OperatorCode encodeOperator(char op) {
     if (op == '+') {
-        return -1;
+        return PLUS;
     }
     if (op == '-') {
-        return -2;
+        return MINUS;
     }
     if (op == '*') {
-        return -3;
+        return MUL;
     }
     if (op == '(') {
-        return -4;
+        return LEFT_PAR;
     }
     if (op == ')') {
-        return -5;
+        return RIGHT_PAR;
     }
 
-    return 0;
+    return UNKNOWN;
 }
 
 void convertToRPN(const std::string& str, Stack *stack) {
@@ -43,9 +45,9 @@ void convertToRPN(const std::string& str, Stack *stack) {
             continue;
         }
 
-        if (isalnum(c)) {
+        if (isdigit(c)) {
             std::string num;
-            while (i < str.length() && isalnum(str[i])) {
+            while (i < str.length() && isdigit(str[i])) {
                 num += str[i];
                 i++;
             }
@@ -53,9 +55,9 @@ void convertToRPN(const std::string& str, Stack *stack) {
             stack_push(raw, std::stoi(num));
         }
         else if (c == '(') {
-            stack_push(operators, encodeOperator(c));
+            stack_push(operators, LEFT_PAR);
         } else if (c == ')') {
-            while (!stack_empty(operators) && stack_get(operators) != -4){
+            while (!stack_empty(operators) && stack_get(operators) != LEFT_PAR){
                 stack_push(raw, stack_get(operators));
                 stack_pop(operators);
             }
@@ -63,7 +65,7 @@ void convertToRPN(const std::string& str, Stack *stack) {
                 stack_pop(operators);
             }
         } else {
-            while (!stack_empty(operators) && getPriority(stack_get(operators)) >= getPriority(encodeOperator(c))) {
+            while (!stack_empty(operators) && getPriority(static_cast<OperatorCode>(stack_get(operators))) >= getPriority(encodeOperator(c))) {
                 stack_push(raw, stack_get(operators));
                 stack_pop(operators);
             }
@@ -95,17 +97,17 @@ void generateAssembler(Stack *rnpStack, std::ofstream& out) {
             out << "POP A" << '\n';
             out << "POP B" << '\n';
 
-            if (c == -1) {
+            if (c == PLUS) {
                 out << "ADD A, B" << '\n';
                 out << "PUSH A" << '\n';
             }
-            if (c == -2) {
-               out<< "SUB B, A" << '\n';
+            if (c == MINUS) {
+               out << "SUB B, A" << '\n';
                out << "PUSH B" << '\n';
             }
-            if (c == -3) {
-               out<< "MUL A, B" << '\n';
-               out<< "PUSH A" << '\n';
+            if (c == MUL) {
+               out << "MUL A, B" << '\n';
+               out << "PUSH A" << '\n';
             }
 
         }

@@ -9,9 +9,9 @@ int main() {
     int passed = 0, failed = 0;
     Stack *stackRes1 = stack_create();
     std::string expr = "1 - 3 - 4";
-    stack_push(stackRes1, -2);
+    stack_push(stackRes1, MINUS);
     stack_push(stackRes1, 4);
-    stack_push(stackRes1, -2);
+    stack_push(stackRes1, MINUS);
     stack_push(stackRes1, 3);
     stack_push(stackRes1, 1);
 
@@ -45,9 +45,9 @@ int main() {
 
     Stack *stackRes2 = stack_create();
     std::string expr2 = "(2 + 5) * 4";
-    stack_push(stackRes2, -3);
+    stack_push(stackRes2, MUL);
     stack_push(stackRes2, 4);
-    stack_push(stackRes2, -1);
+    stack_push(stackRes2, PLUS);
     stack_push(stackRes2, 5);
     stack_push(stackRes2, 2);
 
@@ -81,9 +81,9 @@ int main() {
 
     std::ofstream output1("output1.txt");
     Stack *stack3 = stack_create();
-    stack_push(stack3, -2);
+    stack_push(stack3, MINUS);
     stack_push(stack3, 4);
-    stack_push(stack3, -2);
+    stack_push(stack3, MINUS);
     stack_push(stack3, 3);
     stack_push(stack3, 1);
 
@@ -135,9 +135,9 @@ int main() {
 
     std::ofstream output2("output2.txt");
     Stack *stack4 = stack_create();
-    stack_push(stack4, -3);
+    stack_push(stack4, MUL);
     stack_push(stack4, 4);
-    stack_push(stack4, -1);
+    stack_push(stack4, PLUS);
     stack_push(stack4, 5);
     stack_push(stack4, 2);
 
